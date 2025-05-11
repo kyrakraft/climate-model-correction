@@ -2,32 +2,42 @@
 
 ## Overview
 
-This project aims to correct systematic biases in climate model output using machine learning. Specifically, I compare historical surface air temperature data (2-meter temperature) from the GFDL-ESM4 global climate model (CMIP6 archive) to reanalysis data from ERA5, and train models to learn the mapping from biased model output to reference-quality observations.
-
-Two types of ML models are used:
-1. A tree-based XGBoost regressor trained on flattened data (time × features), which treats each spatial location independently.
-2. A Convolutional Neural Network (CNN) that preserves spatial structure and learns local interactions across latitude and longitude.
-
-Data spans the United States region from 1940 to 2014, covering monthly temperature values.
+This project aims to correct biases in climate model output using machine learning (2 models used: XGBoost and a convolutional neural network). Specifically, I compare historical surface air temperature data (2-meter temperature) from the GFDL-ESM4 global climate model (CMIP6 archive) to reanalysis data from ERA5, and train models to learn the mapping from biased model output to reference-quality observations. 
 
 ## Data acquisition:
 
-GFDL-ESM4 temperature data loaded via the Pangeo Cloud CMIP6 catalog.
+Data spans the United States region from 1940 to 2014, covering monthly temperature values.
 
-ERA5 reanalysis temperature data downloaded using the Copernicus CDS API.
+Data sources:
+- GFDL-ESM4 temperature data loaded via the Pangeo Cloud CMIP6 catalog.
+- ERA5 reanalysis temperature data downloaded using the Copernicus CDS API.
+
 
 ## Preprocessing:
 
-Datasets are subset to the same spatial/temporal range and converted from Kelvin to Celsius.
+The data is preprocessed from NetCDF files and handled using xarray and numpy.
 
-ERA5 is regridded to match the coarser CMIP6 resolution.
+- Inputs and targets are aligned by time, latitude, and longitude, and reshaped into 4D tensors for CNN training.
+- Datasets are subset to the same spatial/temporal range and converted from Kelvin to Celsius.
+- ERA5 is regridded to match the coarser CMIP6 resolution.
 
 ## Modeling:
 
-XGBoost is trained on flattened input and output grids.
+There are two models implemented:
 
-CNN is trained on 3D tensors (time × lat × lon) to preserve spatial relationships.
+### 1. A tabular XGBoost model trained on flattened grid data.
 
-## Evaluation:
+Features include:
+  - CMIP6-predicted surface air temperature (tas)
+  - Latitude and longitude
+  - Year and month (with month encoded using sine and cosine for cyclicality)
 
-Model performance is assessed using standard regression metrics such as RMSE or R².
+### 2. A convolutional neural network that directly learns spatial corrections from gridded input.
+
+The CNN:
+  - Takes as input 2D spatial grids (25x56 resolution) with 3 channels: [CMIP6 tas, sin(month), cos(month)]
+  - Uses a multi-scale architecture with downsampling and upsampling layers to capture both local and regional patterns
+  - Includes batch normalization and residual-style fusion to stabilize training and preserve spatial detail
+  - Uses the AdamW optimizer with decoupled weight decay for regularization
+  - Employs learning rate scheduling (step decay or cosine annealing) to improve convergence
+  - Is trained with Smooth L1 loss (Huber loss) and evaluated using R²
