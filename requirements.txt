@@ -3,6 +3,7 @@ xarray
 netCDF4
 dask
 pandas
+numpy<2
 scikit-learn
 matplotlib
 zarr
@@ -18,4 +19,4 @@ cdsapi>=0.7.4
 # conda install -c conda-forge xesmf
 
 xgboost
-
+torch
