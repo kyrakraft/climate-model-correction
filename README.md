@@ -9,8 +9,11 @@ This project aims to correct biases in climate model output using machine learni
 Data spans the United States region from 1940 to 2014, covering monthly temperature values.
 
 Data sources:
-- GFDL-ESM4 temperature data loaded via the Pangeo Cloud CMIP6 catalog.
-- ERA5 reanalysis temperature data downloaded using the Copernicus CDS API.
+- GFDL-ESM4 (an ESM developed by NOAA) temperature
+  - Data loaded via the Pangeo Cloud CMIP6 (Coupled Model Intercomparison Project) catalog
+- ERA5 reanalysis temperature data (produced by the European Centre for Medium-Range Weather Forecasts, or ECMWF)
+  - High-resolution global climate reanalysis (combines model simulations with observational data)
+  - Downloaded using the Copernicus CDS API
 
 
 ## Preprocessing:
