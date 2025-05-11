@@ -1,0 +1,21 @@
+dotenv
+xarray
+netCDF4
+dask
+pandas
+scikit-learn
+matplotlib
+zarr
+cartopy
+intake-esm
+cdsapi
+earthaccess
+gcsfs
+jupyter
+cdsapi>=0.7.4
+
+# xesmf must be installed via conda-forge
+# conda install -c conda-forge xesmf
+
+xgboost
+

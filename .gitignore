@@ -1,0 +1,25 @@
+# Python / Conda
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+.venv/
+*.ipynb_checkpoints/
+
+# VSCode or editor-specific
+.vscode/
+.idea/
+
+# Environment files
+.DS_Store
+.env
+
+# Data
+data/raw/
+data/processed/
+*.nc
+
+# Logs
+*.log
+
