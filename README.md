@@ -44,3 +44,8 @@ The CNN:
   - Uses the AdamW optimizer with decoupled weight decay for regularization
   - Employs learning rate scheduling (step decay or cosine annealing) to improve convergence
   - Is trained with Smooth L1 loss (Huber loss) and evaluated using R²
+
+## Evaluation:
+
+XGBoost R²: 0.97
+CNN R²: 0.96

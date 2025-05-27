@@ -169,9 +169,11 @@ with torch.no_grad():
 
 
 #hyperparameters
-BATCH_SIZE = 32
-EPOCHS = 25
-LR = 1e-3
+BATCH_SIZE = 15 #previously 32, 15 (best), 10 
+EPOCHS = 150
+LR = 1e-2 #previously 1e-3, then 1e-2 (best; everything else original vals), 1e-1
+WEIGHT_DECAY=1e-2 #previously 1e-4, 1e-3
+ETA_MIN=1e-4 #previously 1e-5, 1e-4 (best)
 
 #create dataset and split
 dataset = ClimateDataset(X, y)
@@ -192,13 +194,13 @@ model = model.to(device)
 criterion = nn.SmoothL1Loss()
 
 #optimizer = torch.optim.Adam(model.parameters(), lr=LR)
-optimizer = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=1e-4)
+optimizer = torch.optim.AdamW(model.parameters(), lr=LR, weight_decay=WEIGHT_DECAY)
 
 #scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5)
 scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
     optimizer,
     T_max=EPOCHS,  # total epochs
-    eta_min=1e-5   # minimum LR at end
+    eta_min=ETA_MIN  # minimum LR at end
 )
 
 
