@@ -48,4 +48,5 @@ The CNN:
 ## Evaluation:
 
 XGBoost R²: 0.97
+
 CNN R²: 0.96
